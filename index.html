@@ -1,165 +1,220 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#090b12">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101114">
 <title>NEXUS DECK</title>
 <style>
-:root{--bg:#090b12;--panel:#111622;--panel2:#171e2d;--line:#293349;--text:#f4f7ff;--muted:#8b96ad;--cyan:#45dcff;--violet:#a879ff;--pink:#ff5db1;--green:#53e6ad;--glow:rgba(69,220,255,.22)}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#19233a 0,transparent 42%),radial-gradient(ellipse at 100% 40%,#21132d 0,transparent 35%),var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
-button,input,select{font:inherit}button{color:inherit;cursor:pointer}
-.app{max-width:1000px;margin:auto;padding:calc(18px + env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom))}
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
-.brand{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--cyan),var(--violet) 60%,var(--pink));display:grid;place-items:center;color:#090b12;font-weight:1000;font-size:20px;box-shadow:0 0 26px var(--glow)}
-h1{font-size:19px;letter-spacing:2.5px;margin:0;font-weight:900}.sub{font-size:10px;color:var(--muted);letter-spacing:2px;margin-top:3px}
-.topright{display:flex;gap:8px;align-items:center}.status{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:11px;padding:9px 11px;border:1px solid var(--line);border-radius:99px;background:#101522}.dot{width:7px;height:7px;border-radius:50%;background:#e5ae55;box-shadow:0 0 10px #e5ae55}
-.iconbtn,.smallbtn{border:1px solid var(--line);background:#141a28;border-radius:12px;padding:10px 12px}.iconbtn:active,.smallbtn:active{transform:scale(.96)}
-.hero{display:flex;justify-content:space-between;align-items:end;margin:18px 0 15px;gap:12px}.eyebrow{color:var(--cyan);font-size:10px;letter-spacing:2px;font-weight:800}.hero h2{font-size:25px;margin:5px 0 3px;letter-spacing:-.7px}.hero p{margin:0;color:var(--muted);font-size:12px}
-.edit{border:1px solid #55447b;background:linear-gradient(135deg,#211a35,#171c2b);border-radius:12px;padding:10px 13px;font-size:12px;font-weight:750;white-space:nowrap}.edit.active{border-color:var(--pink);box-shadow:0 0 18px #ff5db133;color:#ff9ccc}
-.tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 1px 12px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{border:1px solid var(--line);background:#111724;color:var(--muted);padding:10px 14px;border-radius:12px;font-size:12px;white-space:nowrap}.tab.active{color:#fff;border-color:#477d99;background:linear-gradient(135deg,#173044,#211d39);box-shadow:inset 0 0 18px #45dcff12}
-.deck{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
-.key{position:relative;min-height:112px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#171f30,#101521 75%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;padding:12px 5px;overflow:hidden;box-shadow:0 8px 20px #0003;transition:transform .14s,border-color .2s,box-shadow .2s;user-select:none;-webkit-tap-highlight-color:transparent}
-.key:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,var(--keyglow,rgba(69,220,255,.18)),transparent 65%);opacity:.9;pointer-events:none}
-.key:after{content:"";position:absolute;inset:auto 18% 0;height:2px;background:var(--keycolor,var(--cyan));box-shadow:0 0 12px var(--keycolor,var(--cyan));opacity:.8}
-.key:active{transform:scale(.95);border-color:var(--keycolor,var(--cyan));box-shadow:0 0 24px var(--keyglow,rgba(69,220,255,.3))}
-.key .glyph{font-size:27px;line-height:1;filter:drop-shadow(0 0 9px var(--keycolor,var(--cyan)));z-index:1}.key .name{font-size:11px;font-weight:750;z-index:1;text-align:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.key .hint{font-size:9px;color:var(--muted);z-index:1;margin-top:-6px}
-.key.empty{border-style:dashed;background:#0e1320;color:#59647a;box-shadow:none}.key.empty:before,.key.empty:after{display:none}.key.empty .glyph{font-size:23px;filter:none}.key .badge{position:absolute;right:8px;top:8px;font-size:8px;color:#b7a2ff;border:1px solid #65508b;padding:3px 5px;border-radius:6px;z-index:2}
-.editing .key{outline:1px dashed #a879ff55;outline-offset:2px}.editmark{display:none;position:absolute;right:7px;top:7px;border-radius:50%;background:#9b65ed;color:white;width:20px;height:20px;place-items:center;font-size:12px;z-index:3}.editing .editmark{display:grid}
-.bottom{display:flex;justify-content:space-between;align-items:center;margin-top:16px;color:var(--muted);font-size:10px}.pages{display:flex;gap:5px}.pages span{width:5px;height:5px;border-radius:50%;background:#3a4357}.pages span.on{width:17px;border-radius:5px;background:var(--cyan);box-shadow:0 0 9px var(--cyan)}
-.panel{margin-top:18px;border:1px solid var(--line);background:linear-gradient(135deg,#121a29dd,#111522dd);border-radius:17px;padding:14px}.panelhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.panelhead strong{font-size:12px;letter-spacing:.6px}.panelhead span{font-size:10px;color:var(--muted)}.connection{display:flex;align-items:center;justify-content:space-between;gap:12px}.connleft{display:flex;align-items:center;gap:10px}.connicon{width:35px;height:35px;border-radius:11px;background:#1b2a36;display:grid;place-items:center;color:var(--cyan);font-size:17px}.conntext b{display:block;font-size:11px}.conntext small{color:var(--muted);font-size:10px}.connectbtn{border:1px solid #376d71;background:#142a30;color:#8be9e2;border-radius:10px;padding:9px 11px;font-size:10px}
-.toast{position:fixed;bottom:calc(22px + env(safe-area-inset-bottom));left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#202b3d;border:1px solid #435675;padding:11px 15px;border-radius:12px;font-size:12px;box-shadow:0 12px 35px #0008;transition:.25s;z-index:30;max-width:90%;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}
-.overlay{position:fixed;inset:0;background:#03050bd9;backdrop-filter:blur(9px);display:none;align-items:end;justify-content:center;z-index:20;padding:15px}.overlay.show{display:flex}.modal{width:min(520px,100%);background:#141b29;border:1px solid #35425a;border-radius:22px;padding:19px;box-shadow:0 20px 70px #000b;max-height:88vh;overflow:auto}.modal h3{margin:0 0 5px;font-size:18px}.modal p{margin:0 0 16px;color:var(--muted);font-size:11px;line-height:1.5}.field{display:block;margin:12px 0}.field span{display:block;font-size:10px;color:#aab5ca;margin-bottom:6px}.field input,.field select{width:100%;background:#0c1220;color:#fff;border:1px solid #344158;border-radius:11px;padding:12px;outline:none}.field input:focus,.field select:focus{border-color:var(--cyan)}.formrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}.actions{display:flex;gap:9px;margin-top:16px}.actions button{flex:1;padding:12px;border-radius:11px;border:1px solid var(--line);background:#202a3c;font-size:12px}.actions .primary{background:linear-gradient(100deg,#167f9b,#7046a9);border:0;font-weight:800}.danger{color:#ff8eaa!important}
-@media(min-width:700px){.app{padding-top:28px}.key{min-height:145px}.key .glyph{font-size:34px}.key .name{font-size:13px}.deck{gap:15px}.overlay{align-items:center}}
-@media(max-width:370px){.app{padding-left:12px;padding-right:12px}.deck{gap:8px}.key{min-height:98px;border-radius:14px}.key .glyph{font-size:24px}.key .name{font-size:10px}.status{font-size:0}.status .dot{margin:0}}
+:root{color-scheme:dark;--bg:#101114;--surface:#191b20;--surface2:#20232a;--line:#30343d;--text:#f2f3f5;--muted:#969ba5;--accent:#d8dce5;--radius:15px}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select{font:inherit}button{color:inherit}
+.app{width:min(760px,100%);margin:0 auto;padding:calc(17px + env(safe-area-inset-top)) 17px calc(25px + env(safe-area-inset-bottom))}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px}.logo{width:34px;height:34px;border:1px solid #454a55;border-radius:11px;display:grid;place-items:center;font-weight:800;font-size:16px}
+.brand h1{font-size:15px;letter-spacing:1.8px;margin:0;font-weight:750}.brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:1.3px;margin-top:3px}
+.header-actions{display:flex;align-items:center;gap:8px}.status{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:10px}.status i{width:7px;height:7px;background:#777;border-radius:50%}.status.online i{background:#71c99b}
+.icon-btn,.edit-btn,.tab,.action-btn{border:1px solid var(--line);background:transparent;border-radius:10px;padding:9px 11px}
+.icon-btn{width:37px;height:37px;padding:0;font-size:16px}
+.heading{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:30px 0 17px}
+.kicker{font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
+h2{font-size:25px;letter-spacing:-.7px;margin:5px 0 4px;font-weight:700}
+.desc{font-size:12px;color:var(--muted);margin:0}
+.edit-btn{font-size:11px;font-weight:650;white-space:nowrap;padding:10px 13px;background:var(--surface)}
+.edit-btn.active{background:#e6e8ed;color:#15171b;border-color:#e6e8ed}
+.tabs{display:flex;gap:7px;overflow-x:auto;padding:0 0 14px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+.tab{white-space:nowrap;font-size:11px;color:var(--muted);padding:9px 12px;background:var(--surface)}
+.tab.active{color:var(--text);background:#30343c;border-color:#555b66}
+.deck{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.key{position:relative;min-width:0;min-height:105px;padding:12px 5px 10px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;transition:background .15s,border-color .15s,transform .12s;touch-action:manipulation}
+.key:active{transform:scale(.97);background:#292d35}
+.key .glyph{font-size:25px;line-height:1;color:#e4e6eb}
+.key .name{font-size:10px;font-weight:650;text-align:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.key .hint{font-size:8px;letter-spacing:.7px;color:var(--muted);text-transform:uppercase;margin-top:-5px}
+.key.empty{border-style:dashed;background:transparent;color:#777d88}.key.empty .glyph{font-size:21px;color:#8e939c}
+.editing .key{border-color:#6d7480}.editmark{display:none;position:absolute;right:7px;top:7px;font-size:10px;color:#15171b;background:#e4e6eb;border-radius:20px;padding:3px 6px}.editing .editmark{display:block}
+.footer{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:9px;margin-top:14px;letter-spacing:.5px}
+.dots{display:flex;gap:4px}.dots i{width:5px;height:5px;background:#50545d;border-radius:5px}.dots i.active{width:15px;background:#e3e5e9}
+.bridge{margin-top:23px;border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:13px}
+.bridge-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.bridge-head b{font-size:10px;letter-spacing:1px}.bridge-head span{font-size:9px;color:var(--muted)}
+.bridge-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.bridge-info{display:flex;align-items:center;gap:10px;min-width:0}.bridge-icon{width:32px;height:32px;border-radius:9px;background:#292c33;display:grid;place-items:center;color:#d7dae0}
+.bridge-info b{display:block;font-size:11px}.bridge-info small{display:block;color:var(--muted);font-size:9px;margin-top:3px}
+.bridge-btn{border:1px solid #50555f;background:#25282f;border-radius:9px;padding:8px 10px;font-size:9px;white-space:nowrap}
+.toast{position:fixed;z-index:40;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translate(-50%,15px);opacity:0;pointer-events:none;max-width:90%;padding:11px 14px;border-radius:11px;background:#292d35;border:1px solid #555b66;color:#f4f5f7;font-size:11px;text-align:center;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
+.overlay{display:none;position:fixed;inset:0;z-index:30;background:#0009;align-items:flex-end;justify-content:center;padding:12px}.overlay.show{display:flex}
+.modal{width:min(480px,100%);max-height:88vh;overflow:auto;background:#1a1c21;border:1px solid #41454e;border-radius:18px;padding:18px}
+.modal h3{font-size:17px;margin:0 0 6px}.modal p{font-size:11px;color:var(--muted);line-height:1.5;margin:0 0 14px}
+.field{display:block;margin:12px 0}.field span{display:block;font-size:10px;color:#b6bbc4;margin-bottom:6px}
+.field input,.field select{width:100%;background:#111317;border:1px solid #3a3e47;color:var(--text);border-radius:9px;padding:11px;outline:none;font-size:12px}.field input:focus,.field select:focus{border-color:#aeb4bf}
+.formrow{display:grid;grid-template-columns:1fr 1fr;gap:9px}.actions{display:flex;gap:8px;margin-top:16px}.actions button{flex:1;border:1px solid var(--line);border-radius:9px;background:#292c33;padding:11px;font-size:11px}.actions .primary{background:#e4e6eb;color:#15171b;border-color:#e4e6eb;font-weight:700}.actions .danger{color:#ff9b9b}
+.helper{font-size:10px;color:var(--muted);line-height:1.5;margin-top:9px}
+@media(min-width:650px){.app{padding-top:28px}.key{min-height:125px}.key .glyph{font-size:29px}.key .name{font-size:11px}.overlay{align-items:center}}
+@media(max-width:360px){.app{padding-left:12px;padding-right:12px}.deck{gap:7px}.key{min-height:94px}.key .glyph{font-size:22px}.key .name{font-size:9px}.status span{display:none}}
 </style>
 </head>
 <body>
 <div class="app">
-  <header class="top">
-    <div class="brand"><div class="logo">N</div><div><h1>NEXUS DECK</h1><div class="sub">PERSONAL CONTROL CENTER</div></div></div>
-    <div class="topright"><div class="status"><i class="dot"></i><span id="statusText">MAC BRIDGE OFFLINE</span></div><button class="iconbtn" id="settingsBtn" aria-label="Настройки">⚙</button></div>
-  </header>
-  <section class="hero">
-    <div><div class="eyebrow">YOUR COMMAND SURFACE</div><h2 id="pageTitle">Главная панель</h2><p id="pageDesc">Быстрые действия и любимые приложения</p></div>
-    <button class="edit" id="editBtn">✦ Настроить</button>
-  </section>
-  <nav class="tabs" id="tabs"></nav>
-  <main class="deck" id="deck"></main>
-  <div class="bottom"><span id="pageCount">СТРАНИЦА 1 / 4</span><div class="pages" id="dots"></div><span>12 SLOTS</span></div>
-  <section class="panel">
-    <div class="panelhead"><strong>СОЕДИНЕНИЕ</strong><span>LOCAL NETWORK</span></div>
-    <div class="connection"><div class="connleft"><div class="connicon">⌁</div><div class="conntext"><b id="connTitle">Mac Bridge не подключён</b><small id="connSub">Команды пока работают локально</small></div></div><button class="connectbtn" id="bridgeBtn">НАСТРОИТЬ</button></div>
-  </section>
+<header>
+ <div class="brand"><div class="logo">N</div><div><h1>NEXUS DECK</h1><small>PERSONAL CONTROL PANEL</small></div></div>
+ <div class="header-actions"><div class="status" id="status"><i></i><span id="statusText">OFFLINE</span></div><button class="icon-btn" id="settingsBtn" aria-label="Настройки">⚙</button></div>
+</header>
+<section class="heading">
+ <div><div class="kicker">Control surface</div><h2 id="pageTitle">Главная</h2><p class="desc" id="pageDesc">Быстрые действия и приложения</p></div>
+ <button class="edit-btn" id="editBtn">Настроить</button>
+</section>
+<nav class="tabs" id="tabs"></nav>
+<main class="deck" id="deck"></main>
+<div class="footer"><span id="pageCount">1 / 5</span><div class="dots" id="dots"></div><span>12 КНОПОК</span></div>
+<section class="bridge">
+ <div class="bridge-head"><b>MAC BRIDGE</b><span>ЛОКАЛЬНАЯ СЕТЬ</span></div>
+ <div class="bridge-row"><div class="bridge-info"><div class="bridge-icon">⌁</div><div><b id="bridgeTitle">Mac не подключён</b><small id="bridgeSub">Команды PS5 пока недоступны</small></div></div><button class="bridge-btn" id="bridgeBtn">ПОДКЛЮЧИТЬ</button></div>
+</section>
 </div>
 <div class="toast" id="toast"></div>
 <div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
 <script>
-const defaults=[
- {id:'home',name:'Главная',title:'Главная панель',desc:'Быстрые действия и любимые приложения',keys:[
-  ['ps','🎮','PS Remote Play','Открыть ссылку','https://remoteplay.dl.playstation.net/remoteplay/'],
-  ['yt','▶️','YouTube','Открыть сайт','https://youtube.com/tv'],
-  ['sp','♫','Spotify','Открыть сайт','https://open.spotify.com/'],
-  ['twitch','◉','Twitch','Открыть сайт','https://twitch.tv'],
-  ['store','▣','PS Store','Открыть сайт','https://store.playstation.com/'],
-  ['shot','▧','Скриншот','Команда PS5','screenshot'],
-  ['record','⏺','Запись','Команда PS5','record'],
-  ['mic','🎙','Микрофон','Команда PS5','mute'],
-  ['media','♫','Медиа','Открыть раздел','page:media'],
-  ['quick','⚡','Быстрые','Открыть раздел','page:quick'],
-  ['folder','▤','Папки','Открыть раздел','page:folders'],
-  ['custom','＋','Добавить кнопку','Редактор','add']
+'use strict';
+const STORAGE='nexusDeckDataV2';
+const COLORS=['#d9dde5','#aeb6c5','#a8c6ba','#c7b5d8','#d8c2a7'];
+const makeKey=(name,icon,hint,action,color)=>({name,icon,hint,action,color});
+const initialPages=[
+ {id:'home',name:'Главная',title:'Главная',desc:'Быстрые действия и приложения',keys:[
+  makeKey('Remote Play','🎮','Открыть сайт','https://remoteplay.dl.playstation.net/remoteplay/',COLORS[0]),
+  makeKey('YouTube','▶','Открыть сайт','https://youtube.com',COLORS[1]),
+  makeKey('Spotify','♫','Открыть сайт','https://open.spotify.com/',COLORS[2]),
+  makeKey('Twitch','◉','Открыть сайт','https://twitch.tv',COLORS[3]),
+  makeKey('PS Store','▣','Открыть сайт','https://store.playstation.com/',COLORS[4]),
+  makeKey('Скриншот','▧','Команда PS5','bridge:screenshot',COLORS[0]),
+  makeKey('Запись клипа','⏺','Команда PS5','bridge:record',COLORS[1]),
+  makeKey('Микрофон','🎙','Команда PS5','bridge:mute',COLORS[2]),
+  makeKey('Медиа','♫','Раздел','page:media',COLORS[3]),
+  makeKey('Быстрые','⚡','Раздел','page:quick',COLORS[4]),
+  makeKey('Папки','▤','Раздел','page:folders',COLORS[0]),
+  null
  ]},
- {id:'apps',name:'Приложения',title:'Приложения',desc:'Ярлыки сайтов и сервисов',keys:[
-  ['netflix','N','Netflix','Открыть сайт','https://netflix.com'],
-  ['youtube','▶','YouTube','Открыть сайт','https://youtube.com'],
-  ['spotify','♫','Spotify','Открыть сайт','https://open.spotify.com'],
-  ['twitch','◉','Twitch','Открыть сайт','https://twitch.tv'],
-  ['browser','🌐','Браузер','Открыть сайт','https://google.com'],
-  ['store','▣','PlayStation Store','Открыть сайт','https://store.playstation.com'],
-  ['prime','▶','Prime Video','Открыть сайт','https://primevideo.com'],
-  ['discord','◌','Discord','Открыть сайт','https://discord.com/app']
+ {id:'apps',name:'Приложения',title:'Приложения',desc:'Ссылки на сервисы',keys:[
+  makeKey('Netflix','N','Открыть сайт','https://netflix.com',COLORS[0]),
+  makeKey('YouTube','▶','Открыть сайт','https://youtube.com',COLORS[1]),
+  makeKey('Spotify','♫','Открыть сайт','https://open.spotify.com',COLORS[2]),
+  makeKey('Twitch','◉','Открыть сайт','https://twitch.tv',COLORS[3]),
+  makeKey('Discord','◌','Открыть сайт','https://discord.com/app',COLORS[4]),
+  makeKey('PS Store','▣','Открыть сайт','https://store.playstation.com',COLORS[0])
  ]},
- {id:'media',name:'Медиа',title:'Медиа-центр',desc:'Управление музыкой и быстрый доступ',keys:[
-  ['spotify','♫','Spotify','Открыть сайт','https://open.spotify.com'],
-  ['ytmusic','♪','YouTube Music','Открыть сайт','https://music.youtube.com'],
-  ['volumeup','＋','Громче','Команда PS5','volumeup'],
-  ['volumedown','－','Тише','Команда PS5','volumedown'],
-  ['mute','🔇','Без звука','Команда PS5','mute'],
-  ['mediahome','⌂','Главная','Открыть раздел','page:home']
+ {id:'media',name:'Медиа',title:'Медиа',desc:'Музыка и управление звуком',keys:[
+  makeKey('Spotify','♫','Открыть сайт','https://open.spotify.com',COLORS[2]),
+  makeKey('YouTube Music','♪','Открыть сайт','https://music.youtube.com',COLORS[1]),
+  makeKey('Громче','＋','Команда PS5','bridge:volumeup',COLORS[0]),
+  makeKey('Тише','－','Команда PS5','bridge:volumedown',COLORS[0]),
+  makeKey('Без звука','◖','Команда PS5','bridge:mute',COLORS[3])
  ]},
- {id:'quick',name:'Быстрые',title:'Быстрые действия',desc:'Команды консоли и системные инструменты',keys:[
-  ['screenshot','▧','Скриншот','Команда PS5','screenshot'],
-  ['record','⏺','Запись клипа','Команда PS5','record'],
-  ['mic','🎙','Микрофон','Команда PS5','mute'],
-  ['remote','🎮','Remote Play','Открыть ссылку','https://remoteplay.dl.playstation.net/remoteplay/'],
-  ['home','⌂','Главная','Открыть раздел','page:home']
+ {id:'quick',name:'Быстрые',title:'Быстрые действия',desc:'Быстрый доступ к командам',keys:[
+  makeKey('Скриншот','▧','Команда PS5','bridge:screenshot',COLORS[0]),
+  makeKey('Запись клипа','⏺','Команда PS5','bridge:record',COLORS[1]),
+  makeKey('Remote Play','🎮','Открыть сайт','https://remoteplay.dl.playstation.net/remoteplay/',COLORS[2]),
+  makeKey('Главная','⌂','Раздел','page:home',COLORS[3])
  ]},
- {id:'folders',name:'Папки',title:'Мои папки',desc:'Группируй кнопки по своим сценариям',keys:[
-  ['games','🎮','Игры','Папка','folder:games'],
-  ['stream','📡','Стриминг','Папка','folder:stream'],
-  ['tools','🧰','Инструменты','Папка','folder:tools'],
-  ['add','＋','Новая папка','Создать','addfolder']
+ {id:'folders',name:'Папки',title:'Папки',desc:'Создавай отдельные панели для своих сценариев',keys:[
+  makeKey('Новая папка','＋','Создать','createpage',COLORS[0])
  ]}
 ];
-const colors=['#45dcff','#a879ff','#ff5db1','#53e6ad','#ffc66d'];
-let pages=JSON.parse(localStorage.getItem('nexusPages')||'null')||defaults;
-let active='home',editing=false,folder=null;
+function normalizePages(raw){
+ if(!Array.isArray(raw)||!raw.length)return structuredCloneSafe(initialPages);
+ return raw.map((p,pi)=>({id:String(p.id||'page_'+pi),name:String(p.name||'Страница'),title:String(p.title||p.name||'Страница'),desc:String(p.desc||''),keys:Array.from({length:12},(_,i)=>{
+  const k=(p.keys||[])[i];if(!k)return null;
+  if(Array.isArray(k))return makeKey(k[2]||'Кнопка',k[1]||'✦',k[3]||'Действие',k[4]||'',COLORS[i%5]);
+  if(typeof k==='object')return {name:String(k.name||'Кнопка'),icon:String(k.icon||'✦'),hint:String(k.hint||'Действие'),action:String(k.action||''),color:k.color||COLORS[i%5]};
+  return null;
+ })}));
+}
+function structuredCloneSafe(x){return JSON.parse(JSON.stringify(x))}
+let pages;
+try{pages=normalizePages(JSON.parse(localStorage.getItem(STORAGE)||localStorage.getItem('nexusPages')||'null'));}catch(e){pages=structuredCloneSafe(initialPages)}
+let active='home',editing=false,activeFolder=null;
 const $=id=>document.getElementById(id);
-function save(){localStorage.setItem('nexusPages',JSON.stringify(pages))}
-function page(){return pages.find(p=>p.id===active)||pages[0]}
-function toast(s){$('toast').textContent=s;$('toast').classList.add('show');clearTimeout(window.tt);window.tt=setTimeout(()=>$('toast').classList.remove('show'),2400)}
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function save(){localStorage.setItem(STORAGE,JSON.stringify(pages));}
+function currentPage(){return pages.find(p=>p.id===active)||pages[0]}
+function currentKeys(){return activeFolder?activeFolder.keys:currentPage().keys}
+function toast(message){$('toast').textContent=message;$('toast').classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').classList.remove('show'),2500)}
 function render(){
- const p=page();$('pageTitle').textContent=folder?folder.name:p.title;$('pageDesc').textContent=folder?'Папка быстрых команд':p.desc;
- $('tabs').innerHTML=pages.map(x=>`<button class="tab ${x.id===active?'active':''}" data-page="${x.id}">${x.name}</button>`).join('');
- $('tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{active=b.dataset.page;folder=null;render()});
- let keys=folder?folder.keys:p.keys;let arr=Array.from({length:12},(_,i)=>keys[i]||null);
+ const p=currentPage(),keys=currentKeys();
+ $('pageTitle').textContent=activeFolder?activeFolder.name:p.title;
+ $('pageDesc').textContent=activeFolder?'Кнопки папки':p.desc;
+ $('tabs').innerHTML=pages.map(x=>`<button class="tab ${!activeFolder&&x.id===active?'active':''}" data-id="${esc(x.id)}">${esc(x.name)}</button>`).join('');
+ $('tabs').querySelectorAll('[data-id]').forEach(b=>b.addEventListener('click',()=>{active=b.dataset.id;activeFolder=null;render()}));
  $('deck').classList.toggle('editing',editing);
- $('deck').innerHTML=arr.map((k,i)=>k?`<button class="key" data-index="${i}" style="--keycolor:${k.color||colors[i%5]};--keyglow:${k.glow||'rgba(69,220,255,.17)'}"><span class="editmark">✎</span><span class="glyph">${esc(k.icon)}</span><span class="name">${esc(k.name)}</span><span class="hint">${esc(k.hint||'CUSTOM ACTION')}</span></button>`:`<button class="key empty" data-index="${i}"><span class="glyph">＋</span><span class="name">Свободный слот</span></button>`).join('');
- $('deck').querySelectorAll('.key').forEach(b=>b.onclick=()=>{let i=+b.dataset.index,k=keys[i];if(editing){openEditor(i,k);return}if(!k){toast('Включи настройку, чтобы добавить кнопку');return}run(k)});
- $('pageCount').textContent=`СТРАНИЦА ${pages.findIndex(x=>x.id===active)+1} / ${pages.length}`;$('dots').innerHTML=pages.map((x,i)=>`<span class="${x.id===active?'on':''}"></span>`).join('');
- $('editBtn').classList.toggle('active',editing);$('editBtn').textContent=editing?'✓ Готово':'✦ Настроить';
+ $('deck').innerHTML=Array.from({length:12},(_,i)=>{
+  const k=keys[i];return k?`<button class="key" data-index="${i}"><span class="editmark">ИЗМ.</span><span class="glyph">${esc(k.icon)}</span><span class="name">${esc(k.name)}</span><span class="hint">${esc(k.hint)}</span></button>`:`<button class="key empty" data-index="${i}"><span class="glyph">＋</span><span class="name">Добавить</span></button>`;
+ }).join('');
+ $('deck').querySelectorAll('.key').forEach(b=>b.addEventListener('click',()=>{const i=Number(b.dataset.index),k=keys[i];if(editing){openKeyEditor(i,k);return}if(!k){toast('Нажми «Настроить», чтобы добавить кнопку');return}execute(k)}));
+ $('pageCount').textContent=`${pages.findIndex(x=>x.id===active)+1} / ${pages.length}`;
+ $('dots').innerHTML=pages.map(x=>`<i class="${!activeFolder&&x.id===active?'active':''}"></i>`).join('');
+ $('editBtn').textContent=editing?'Готово':'Настроить';$('editBtn').classList.toggle('active',editing);
 }
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function run(k){
+function execute(k){
  const a=k.action||'';
- if(a.startsWith('http')){window.open(a,'_blank','noopener');return}
- if(a.startsWith('page:')){active=a.slice(5);folder=null;render();return}
- if(a.startsWith('folder:')){let f=a.slice(7);folder={name:k.name,keys:(JSON.parse(localStorage.getItem('nexusFolder_'+f)||'[]'))};if(!folder.keys.length)folder.keys=[{name:'Назад',icon:'↩',hint:'В главное меню',action:'page:folders'}];render();return}
- if(a==='add'){editing=true;render();openEditor(11,null);return}
- if(a==='addfolder'){openFolderCreator();return}
- if(['screenshot','record','mute','volumeup','volumedown'].includes(a)){toast('Команда «'+k.name+'»: нужен Mac Bridge и совместимый способ управления PS5');return}
- if(a.startsWith('custom:')){toast(a.slice(7));return}
- toast('Действие: '+k.name)
+ if(/^https?:\/\//i.test(a)){window.open(a,'_blank','noopener,noreferrer');return}
+ if(a.startsWith('page:')){active=a.slice(5);activeFolder=null;render();return}
+ if(a==='createpage'){openPageCreator();return}
+ if(a==='back:folders'){activeFolder=null;render();return}
+ if(a.startsWith('bridge:')){sendBridge(a.slice(7));return}
+ if(a.startsWith('note:')){toast(a.slice(5)||k.name);return}
+ toast('Для этой кнопки действие не задано');
 }
-function modal(html){$('modal').innerHTML=html;$('overlay').classList.add('show')}
+function showModal(content){$('modal').innerHTML=content;$('overlay').classList.add('show')}
 function closeModal(){$('overlay').classList.remove('show')}
 $('overlay').addEventListener('click',e=>{if(e.target===$('overlay'))closeModal()});
-function openEditor(index,k){
- const p=page(),keys=folder?folder.keys:p.keys;
- modal(`<h3>${k?'Настроить кнопку':'Новая кнопка'}</h3><p>Добавь ярлык сайта, быстрый переход или свою команду. Настройки сохраняются на этом устройстве.</p>
- <label class="field"><span>Название</span><input id="fName" maxlength="24" placeholder="Например, YouTube" value="${esc(k?.name||'')}"></label>
- <div class="formrow"><label class="field"><span>Иконка (эмодзи или символ)</span><input id="fIcon" maxlength="4" value="${esc(k?.icon||'✦')}"></label><label class="field"><span>Цвет подсветки</span><select id="fColor">${colors.map((c,i)=>`<option value="${c}" ${(k?.color||colors[index%5])===c?'selected':''}>${['Cyan','Violet','Pink','Green','Amber'][i]}</option>`).join('')}</select></label></div>
- <label class="field"><span>Тип действия</span><select id="fType"><option value="url">Открыть сайт / ссылку</option><option value="note">Показать подсказку</option><option value="command">Команда для Mac Bridge</option><option value="page">Перейти на раздел</option></select></label>
- <label class="field"><span>Ссылка, команда или текст</span><input id="fAction" placeholder="https://example.com" value="${esc(k?.action?.startsWith('http')?k.action:k?.action?.startsWith('custom:')?k.action.slice(7):'')}"></label>
- <div class="actions"><button id="cancel">Отмена</button>${k?'<button class="danger" id="delete">Удалить</button>':''}<button class="primary" id="saveKey">Сохранить</button></div>`);
- $('cancel').onclick=closeModal;
- if(k)$('delete').onclick=()=>{keys[index]=null;while(keys.length&&keys[keys.length-1]===null)keys.pop();save();closeModal();render();toast('Кнопка удалена')};
+function openKeyEditor(index,key){
+ const keys=currentKeys(),editingExisting=!!key;
+ showModal(`<h3>${editingExisting?'Изменить кнопку':'Добавить кнопку'}</h3><p>Настрой название, значок и действие. Изменения сохраняются в браузере.</p>
+ <label class="field"><span>Название</span><input id="keyName" maxlength="28" placeholder="Например, YouTube" value="${esc(key?.name||'')}"></label>
+ <div class="formrow"><label class="field"><span>Иконка</span><input id="keyIcon" maxlength="6" value="${esc(key?.icon||'✦')}"></label><label class="field"><span>Цвет значка</span><select id="keyColor">${COLORS.map((c,i)=>`<option value="${c}" ${(key?.color||COLORS[index%5])===c?'selected':''}>${['Серебристый','Серо-голубой','Зелёный','Лавандовый','Песочный'][i]}</option>`).join('')}</select></label></div>
+ <label class="field"><span>Действие</span><select id="keyType"><option value="url">Открыть сайт или ссылку</option><option value="note">Показать сообщение</option><option value="bridge">Команда Mac Bridge</option><option value="page">Открыть раздел</option></select></label>
+ <label class="field"><span>Адрес / команда / текст</span><input id="keyValue" placeholder="https://example.com"></label>
+ <div class="helper">Команды Mac Bridge пока сохраняются как заготовки. Они начнут выполняться после установки и настройки сервера на Mac.</div>
+ <div class="actions"><button id="cancelEdit">Отмена</button>${editingExisting?'<button class="danger" id="deleteKey">Удалить</button>':''}<button class="primary" id="saveKey">Сохранить</button></div>`);
+ const old=key?.action||'';
+ if(old.startsWith('http')){$('keyType').value='url';$('keyValue').value=old}
+ else if(old.startsWith('bridge:')){$('keyType').value='bridge';$('keyValue').value=old.slice(7)}
+ else if(old.startsWith('note:')){$('keyType').value='note';$('keyValue').value=old.slice(5)}
+ else if(old.startsWith('page:')){$('keyType').value='page';$('keyValue').value=old.slice(5)}
+ $('cancelEdit').onclick=closeModal;
+ if(editingExisting)$('deleteKey').onclick=()=>{keys[index]=null;save();closeModal();render();toast('Кнопка удалена')};
  $('saveKey').onclick=()=>{
-  let name=$('fName').value.trim(),icon=$('fIcon').value.trim()||'✦',type=$('fType').value,val=$('fAction').value.trim(),action=val;
-  if(!name){toast('Введи название кнопки');return}
-  if(type==='url'){if(!/^https?:\/\//i.test(val)){toast('Укажи ссылку, начинающуюся с https://');return}}
-  if(type==='note')action='custom:'+val;
-  if(type==='command')action='bridge:'+val;
-  if(type==='page')action='page:'+val;
-  keys[index]={name,icon,action,color:$('fColor').value,hint:{url:'WEB LINK',note:'INFO',command:'MAC BRIDGE',page:'NAVIGATION'}[type]};
-  save();closeModal();render();toast('Кнопка сохранена')
+  const name=$('keyName').value.trim(),icon=$('keyIcon').value.trim()||'✦',type=$('keyType').value,value=$('keyValue').value.trim();
+  if(!name){toast('Укажи название кнопки');return}
+  let action='';
+  if(type==='url'){if(!/^https?:\/\//i.test(value)){toast('Ссылка должна начинаться с https:// или http://');return}action=value}
+  if(type==='note')action='note:'+value;
+  if(type==='bridge'){if(!/^[a-z0-9_-]+$/i.test(value)){toast('Для команды используй латинские буквы, цифры, _ или -');return}action='bridge:'+value}
+  if(type==='page'){if(!pages.some(p=>p.id===value)){toast('Раздел с таким ID не найден');return}action='page:'+value}
+  keys[index]={name,icon,hint:{url:'ССЫЛКА',note:'СООБЩЕНИЕ',bridge:'MAC BRIDGE',page:'РАЗДЕЛ'}[type],action,color:$('keyColor').value};
+  save();closeModal();render();toast('Кнопка сохранена');
  };
 }
-function openFolderCreator(){modal(`<h3>Новая папка</h3><p>Создай отдельную страницу для набора кнопок.</p><label class="field"><span>Название папки</span><input id="folderName" placeholder="Например, Мои игры"></label><div class="actions"><button id="cancel">Отмена</button><button class="primary" id="create">Создать</button></div>`);$('cancel').onclick=closeModal;$('create').onclick=()=>{let n=$('folderName').value.trim();if(!n)return toast('Введи название');let id='user_'+Date.now();pages.push({id,name:n,title:n,desc:'Моя пользовательская панель',keys:[{name:'Добавить кнопку',icon:'＋',hint:'EDITOR',action:'add'}]});save();active=id;folder=null;closeModal();render()}}
-$('editBtn').onclick=()=>{editing=!editing;render();if(editing)toast('Нажми на слот, чтобы добавить или изменить кнопку')};
-$('settingsBtn').onclick=()=>{modal(`<h3>Настройки NEXUS DECK</h3><p>Персонализация панели и подключение промежуточного устройства.</p><label class="field"><span>Название устройства-посредника</span><input id="macName" value="MacBook"></label><label class="field"><span>Адрес Mac Bridge (позже)</span><input id="bridgeUrl" placeholder="http://192.168.1.10:8765"></label><div class="actions"><button id="cancel">Закрыть</button><button class="primary" id="saveSettings">Сохранить</button></div>`);$('cancel').onclick=closeModal;$('saveSettings').onclick=()=>{localStorage.setItem('nexusBridgeUrl',$('bridgeUrl').value.trim());localStorage.setItem('nexusMacName',$('macName').value.trim());closeModal();toast('Настройки сохранены')}};
-$('bridgeBtn').onclick=()=>{modal(`<h3>Подключение Mac Bridge</h3><p>Следующий этап — установить на Mac небольшой локальный сервер. Телефон и Mac должны находиться в одной Wi-Fi сети. Пока сервер не установлен, кнопки команд PS5 показывают демо-уведомления.</p><label class="field"><span>Адрес локального сервера</span><input id="bridgeInput" placeholder="http://192.168.1.10:8765" value="${esc(localStorage.getItem('nexusBridgeUrl')||'')}"></label><div class="actions"><button id="cancel">Отмена</button><button class="primary" id="testBridge">Проверить</button></div>`);$('cancel').onclick=closeModal;$('testBridge').onclick=()=>{let v=$('bridgeInput').value.trim();if(v)localStorage.setItem('nexusBridgeUrl',v);closeModal();toast('Проверка станет доступна после установки Mac Bridge')}};
+function openPageCreator(){
+ showModal(`<h3>Новая страница</h3><p>Создай отдельный экран на 12 кнопок.</p><label class="field"><span>Название</span><input id="newPageName" maxlength="18" placeholder="Например, Игры"></label><div class="actions"><button id="cancelPage">Отмена</button><button class="primary" id="createPage">Создать</button></div>`);
+ $('cancelPage').onclick=closeModal;
+ $('createPage').onclick=()=>{const name=$('newPageName').value.trim();if(!name){toast('Введи название страницы');return}const id='page_'+Date.now();pages.push({id,name,title:name,desc:'Пользовательская панель',keys:[null,null,null,null,null,null,null,null,null,null,null,null]});active=id;activeFolder=null;save();closeModal();editing=true;render();toast('Страница создана — добавь кнопки')};
+}
+function bridgeUrl(){return (localStorage.getItem('nexusBridgeUrl')||'').trim().replace(/\/+$/,'')}
+async function sendBridge(command){
+ const base=bridgeUrl();if(!base){toast('Сначала укажи адрес Mac Bridge в настройках');return}
+ try{const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),3500);const response=await fetch(base+'/command',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({command}),signal:controller.signal});clearTimeout(timer);if(!response.ok)throw new Error('HTTP '+response.status);toast('Команда отправлена')}
+ catch(e){toast('Mac Bridge недоступен. Проверь Mac и Wi‑Fi')}
+}
+async function checkBridge(url){
+ const status=$('status');$('bridgeTitle').textContent='Проверяем подключение…';$('bridgeSub').textContent=url;
+ try{const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),3500);const r=await fetch(url+'/health',{method:'GET',cache:'no-store',signal:controller.signal});clearTimeout(timer);if(!r.ok)throw new Error('HTTP '+r.status);status.classList.add('online');$('statusText').textContent='ONLINE';$('bridgeTitle').textContent='Mac Bridge подключён';$('bridgeSub').textContent='Сервер отвечает';toast('Соединение установлено')}
+ catch(e){status.classList.remove('online');$('statusText').textContent='OFFLINE';$('bridgeTitle').textContent='Mac Bridge не отвечает';$('bridgeSub').textContent='Проверь адрес, сервер и Wi‑Fi';toast('Не удалось подключиться к Mac Bridge')}
+}
+$('editBtn').onclick=()=>{editing=!editing;render();if(editing)toast('Выбери кнопку или свободный слот для настройки')};
+$('settingsBtn').onclick=()=>{
+ showModal(`<h3>Настройки</h3><p>Адрес локального сервера на MacBook. Оба устройства должны быть в одной Wi‑Fi сети.</p><label class="field"><span>Адрес Mac Bridge</span><input id="bridgeAddress" placeholder="http://192.168.1.10:8765" value="${esc(bridgeUrl())}"></label><div class="helper">Сам сервер Mac Bridge ещё нужно установить. Не используй адрес сайта GitHub Pages — здесь нужен локальный IP-адрес MacBook.</div><div class="actions"><button id="cancelSettings">Закрыть</button><button class="primary" id="saveSettings">Сохранить</button></div>`);
+ $('cancelSettings').onclick=closeModal;$('saveSettings').onclick=()=>{const v=$('bridgeAddress').value.trim().replace(/\/+$/,'');if(v&&!/^https?:\/\/[^\s]+$/i.test(v)){toast('Проверь формат адреса');return}localStorage.setItem('nexusBridgeUrl',v);closeModal();if(v)checkBridge(v);else{ $('status').classList.remove('online');$('statusText').textContent='OFFLINE';$('bridgeTitle').textContent='Mac не подключён';$('bridgeSub').textContent='Команды PS5 пока недоступны'}};
+};
+$('bridgeBtn').onclick=()=>{const u=bridgeUrl();if(!u){$('settingsBtn').click();return}checkBridge(u)};
 render();
 </script>
 </body>
