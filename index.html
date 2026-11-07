@@ -201,7 +201,7 @@ function openPageCreator(){
 function bridgeUrl(){return (localStorage.getItem('nexusBridgeUrl')||'').trim().replace(/\/+$/,'')}
 async function sendBridge(command){
  const base=bridgeUrl();if(!base){toast('Сначала укажи адрес Mac Bridge в настройках');return}
- try{const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),3500);const response=await fetch(base+'/command',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({command}),signal:controller.signal});clearTimeout(timer);if(!response.ok)throw new Error('HTTP '+response.status);toast('Команда отправлена')}
+ try{const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),3500);const response=await fetch(base+'/command',{method:'POST',headers:{'Content-Type':'application/json','X-Nexus-Token':localStorage.getItem('nexusBridgeToken')||''},body:JSON.stringify({command}),signal:controller.signal});clearTimeout(timer);if(!response.ok)throw new Error('HTTP '+response.status);toast('Команда отправлена')}
  catch(e){toast('Mac Bridge недоступен. Проверь Mac и Wi‑Fi')}
 }
 async function checkBridge(url){
@@ -212,7 +212,7 @@ async function checkBridge(url){
 $('editBtn').onclick=()=>{editing=!editing;render();if(editing)toast('Выбери кнопку или свободный слот для настройки')};
 $('settingsBtn').onclick=()=>{
  showModal(`<h3>Настройки</h3><p>Адрес локального сервера на MacBook. Оба устройства должны быть в одной Wi‑Fi сети.</p><label class="field"><span>Адрес Mac Bridge</span><input id="bridgeAddress" placeholder="http://192.168.1.10:8765" value="${esc(bridgeUrl())}"></label><div class="helper">Сам сервер Mac Bridge ещё нужно установить. Не используй адрес сайта GitHub Pages — здесь нужен локальный IP-адрес MacBook.</div><div class="actions"><button id="cancelSettings">Закрыть</button><button class="primary" id="saveSettings">Сохранить</button></div>`);
- $('cancelSettings').onclick=closeModal;$('saveSettings').onclick=()=>{const v=$('bridgeAddress').value.trim().replace(/\/+$/,'');if(v&&!/^https?:\/\/[^\s]+$/i.test(v)){toast('Проверь формат адреса');return}localStorage.setItem('nexusBridgeUrl',v);closeModal();if(v)checkBridge(v);else{ $('status').classList.remove('online');$('statusText').textContent='OFFLINE';$('bridgeTitle').textContent='Mac не подключён';$('bridgeSub').textContent='Команды PS5 пока недоступны'}};
+ $('cancelSettings').onclick=closeModal;$('saveSettings').onclick=()=>{const v=$('bridgeAddress').value.trim().replace(/\/+$/,'');if(v&&!/^https?:\/\/[^\s]+$/i.test(v)){toast('Проверь формат адреса');return}localStorage.setItem('nexusBridgeUrl',v);localStorage.setItem('nexusBridgeToken',$('bridgeToken').value.trim());closeModal();if(v)checkBridge(v);else{ $('status').classList.remove('online');$('statusText').textContent='OFFLINE';$('bridgeTitle').textContent='Mac не подключён';$('bridgeSub').textContent='Команды PS5 пока недоступны'}};
 };
 $('bridgeBtn').onclick=()=>{const u=bridgeUrl();if(!u){$('settingsBtn').click();return}checkBridge(u)};
 render();
