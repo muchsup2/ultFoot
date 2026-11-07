@@ -2,220 +2,109 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#101114">
-<title>NEXUS DECK</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#07120f">
+<title>ULTIMATE FOOTBALL — Prototype 0.1</title>
 <style>
-:root{color-scheme:dark;--bg:#101114;--surface:#191b20;--surface2:#20232a;--line:#30343d;--text:#f2f3f5;--muted:#969ba5;--accent:#d8dce5;--radius:15px}
-*{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-button,input,select{font:inherit}button{color:inherit}
-.app{width:min(760px,100%);margin:0 auto;padding:calc(17px + env(safe-area-inset-top)) 17px calc(25px + env(safe-area-inset-bottom))}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand{display:flex;align-items:center;gap:10px}.logo{width:34px;height:34px;border:1px solid #454a55;border-radius:11px;display:grid;place-items:center;font-weight:800;font-size:16px}
-.brand h1{font-size:15px;letter-spacing:1.8px;margin:0;font-weight:750}.brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:1.3px;margin-top:3px}
-.header-actions{display:flex;align-items:center;gap:8px}.status{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:10px}.status i{width:7px;height:7px;background:#777;border-radius:50%}.status.online i{background:#71c99b}
-.icon-btn,.edit-btn,.tab,.action-btn{border:1px solid var(--line);background:transparent;border-radius:10px;padding:9px 11px}
-.icon-btn{width:37px;height:37px;padding:0;font-size:16px}
-.heading{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:30px 0 17px}
-.kicker{font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
-h2{font-size:25px;letter-spacing:-.7px;margin:5px 0 4px;font-weight:700}
-.desc{font-size:12px;color:var(--muted);margin:0}
-.edit-btn{font-size:11px;font-weight:650;white-space:nowrap;padding:10px 13px;background:var(--surface)}
-.edit-btn.active{background:#e6e8ed;color:#15171b;border-color:#e6e8ed}
-.tabs{display:flex;gap:7px;overflow-x:auto;padding:0 0 14px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
-.tab{white-space:nowrap;font-size:11px;color:var(--muted);padding:9px 12px;background:var(--surface)}
-.tab.active{color:var(--text);background:#30343c;border-color:#555b66}
-.deck{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
-.key{position:relative;min-width:0;min-height:105px;padding:12px 5px 10px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;transition:background .15s,border-color .15s,transform .12s;touch-action:manipulation}
-.key:active{transform:scale(.97);background:#292d35}
-.key .glyph{font-size:25px;line-height:1;color:#e4e6eb}
-.key .name{font-size:10px;font-weight:650;text-align:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.key .hint{font-size:8px;letter-spacing:.7px;color:var(--muted);text-transform:uppercase;margin-top:-5px}
-.key.empty{border-style:dashed;background:transparent;color:#777d88}.key.empty .glyph{font-size:21px;color:#8e939c}
-.editing .key{border-color:#6d7480}.editmark{display:none;position:absolute;right:7px;top:7px;font-size:10px;color:#15171b;background:#e4e6eb;border-radius:20px;padding:3px 6px}.editing .editmark{display:block}
-.footer{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:9px;margin-top:14px;letter-spacing:.5px}
-.dots{display:flex;gap:4px}.dots i{width:5px;height:5px;background:#50545d;border-radius:5px}.dots i.active{width:15px;background:#e3e5e9}
-.bridge{margin-top:23px;border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:13px}
-.bridge-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.bridge-head b{font-size:10px;letter-spacing:1px}.bridge-head span{font-size:9px;color:var(--muted)}
-.bridge-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.bridge-info{display:flex;align-items:center;gap:10px;min-width:0}.bridge-icon{width:32px;height:32px;border-radius:9px;background:#292c33;display:grid;place-items:center;color:#d7dae0}
-.bridge-info b{display:block;font-size:11px}.bridge-info small{display:block;color:var(--muted);font-size:9px;margin-top:3px}
-.bridge-btn{border:1px solid #50555f;background:#25282f;border-radius:9px;padding:8px 10px;font-size:9px;white-space:nowrap}
-.toast{position:fixed;z-index:40;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translate(-50%,15px);opacity:0;pointer-events:none;max-width:90%;padding:11px 14px;border-radius:11px;background:#292d35;border:1px solid #555b66;color:#f4f5f7;font-size:11px;text-align:center;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
-.overlay{display:none;position:fixed;inset:0;z-index:30;background:#0009;align-items:flex-end;justify-content:center;padding:12px}.overlay.show{display:flex}
-.modal{width:min(480px,100%);max-height:88vh;overflow:auto;background:#1a1c21;border:1px solid #41454e;border-radius:18px;padding:18px}
-.modal h3{font-size:17px;margin:0 0 6px}.modal p{font-size:11px;color:var(--muted);line-height:1.5;margin:0 0 14px}
-.field{display:block;margin:12px 0}.field span{display:block;font-size:10px;color:#b6bbc4;margin-bottom:6px}
-.field input,.field select{width:100%;background:#111317;border:1px solid #3a3e47;color:var(--text);border-radius:9px;padding:11px;outline:none;font-size:12px}.field input:focus,.field select:focus{border-color:#aeb4bf}
-.formrow{display:grid;grid-template-columns:1fr 1fr;gap:9px}.actions{display:flex;gap:8px;margin-top:16px}.actions button{flex:1;border:1px solid var(--line);border-radius:9px;background:#292c33;padding:11px;font-size:11px}.actions .primary{background:#e4e6eb;color:#15171b;border-color:#e4e6eb;font-weight:700}.actions .danger{color:#ff9b9b}
-.helper{font-size:10px;color:var(--muted);line-height:1.5;margin-top:9px}
-@media(min-width:650px){.app{padding-top:28px}.key{min-height:125px}.key .glyph{font-size:29px}.key .name{font-size:11px}.overlay{align-items:center}}
-@media(max-width:360px){.app{padding-left:12px;padding-right:12px}.deck{gap:7px}.key{min-height:94px}.key .glyph{font-size:22px}.key .name{font-size:9px}.status span{display:none}}
+:root{--bg:#07120f;--panel:#101d19;--line:#263a32;--muted:#91a69b;--lime:#c7ff54;--white:#f4f8f4}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--white);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;touch-action:none}
+#game{position:absolute;inset:0}canvas{display:block;width:100%;height:100%}
+.top{position:absolute;top:env(safe-area-inset-top,12px);left:14px;right:14px;display:flex;justify-content:space-between;align-items:center;pointer-events:none}
+.brand{font-weight:900;letter-spacing:.14em;font-size:12px}.brand span{color:var(--lime)}
+.pill{background:#07120fbd;border:1px solid #ffffff24;border-radius:999px;padding:8px 12px;font-size:11px;color:#dce8df;backdrop-filter:blur(12px)}
+.hud{position:absolute;top:62px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none}
+.score{background:#07120fca;border:1px solid #ffffff20;border-radius:16px;padding:10px 14px;backdrop-filter:blur(12px)}
+.score small{display:block;color:var(--muted);font-size:9px;letter-spacing:.12em}.score strong{font-size:24px;letter-spacing:.08em}
+.status{font-size:11px;color:#e6f0e9;background:#07120fbd;border:1px solid #ffffff20;padding:10px 12px;border-radius:12px;max-width:48%;text-align:right}
+.bottom{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);left:14px;right:14px;display:flex;gap:10px;align-items:end}
+.hint{flex:1;background:#07120fce;border:1px solid #ffffff20;border-radius:16px;padding:12px 14px;backdrop-filter:blur(12px)}
+.hint b{font-size:12px}.hint p{margin:4px 0 0;color:#a9b9af;font-size:10px;line-height:1.4}
+.btn{border:1px solid #ffffff28;background:#14231d;color:white;border-radius:14px;padding:13px 15px;font-weight:700;font-size:11px}
+.btn.primary{background:var(--lime);color:#10180c;border-color:var(--lime)}
+.panel{position:absolute;inset:0;background:linear-gradient(180deg,#07120feF,#07120fda);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(14px)}
+.card{width:min(440px,100%);background:#101d19;border:1px solid #2a4036;border-radius:24px;padding:24px;box-shadow:0 24px 90px #0009}
+.eyebrow{font-size:10px;color:var(--lime);font-weight:800;letter-spacing:.2em}
+h1{font-size:clamp(28px,7vw,42px);line-height:.98;letter-spacing:-.05em;margin:12px 0}
+.sub{color:#a9bbb0;font-size:13px;line-height:1.5}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:20px 0}
+.choice{background:#172820;border:1px solid #2a4036;border-radius:15px;padding:14px;text-align:left;color:white}
+.choice b{display:block;font-size:12px;margin-bottom:5px}.choice span{font-size:10px;color:#9eb1a5;line-height:1.4}
+.choice.active{border-color:var(--lime);box-shadow:inset 0 0 0 1px var(--lime)}
+.full{width:100%;padding:16px;border-radius:14px;font-size:12px}
+.hidden{display:none!important}
+#toast{position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);background:#07120fe8;border:1px solid #c7ff5470;border-radius:14px;padding:14px 22px;font-weight:900;letter-spacing:.08em;font-size:18px;opacity:0;transition:opacity .2s;pointer-events:none}
+@media(min-width:800px){.bottom{left:24px;right:24px}.top{left:24px;right:24px}.hud{left:24px;right:24px}}
 </style>
 </head>
 <body>
-<div class="app">
-<header>
- <div class="brand"><div class="logo">N</div><div><h1>NEXUS DECK</h1><small>PERSONAL CONTROL PANEL</small></div></div>
- <div class="header-actions"><div class="status" id="status"><i></i><span id="statusText">OFFLINE</span></div><button class="icon-btn" id="settingsBtn" aria-label="Настройки">⚙</button></div>
-</header>
-<section class="heading">
- <div><div class="kicker">Control surface</div><h2 id="pageTitle">Главная</h2><p class="desc" id="pageDesc">Быстрые действия и приложения</p></div>
- <button class="edit-btn" id="editBtn">Настроить</button>
-</section>
-<nav class="tabs" id="tabs"></nav>
-<main class="deck" id="deck"></main>
-<div class="footer"><span id="pageCount">1 / 5</span><div class="dots" id="dots"></div><span>12 КНОПОК</span></div>
-<section class="bridge">
- <div class="bridge-head"><b>MAC BRIDGE</b><span>ЛОКАЛЬНАЯ СЕТЬ</span></div>
- <div class="bridge-row"><div class="bridge-info"><div class="bridge-icon">⌁</div><div><b id="bridgeTitle">Mac не подключён</b><small id="bridgeSub">Команды PS5 пока недоступны</small></div></div><button class="bridge-btn" id="bridgeBtn">ПОДКЛЮЧИТЬ</button></div>
-</section>
+<div id="game"></div>
+<div class="top"><div class="brand">ULTIMATE <span>FOOTBALL</span></div><div class="pill">PROTOTYPE 0.1 · 3D</div></div>
+<div class="hud"><div class="score"><small id="modeLabel">CAREER · TRAINING</small><strong><span id="goals">0</span> : 0</strong></div><div class="status" id="status">Проведи пальцем от мяча к воротам</div></div>
+<div class="bottom"><div class="hint"><b id="hintTitle">Удар по воротам</b><p id="hintText">Зажми мяч и проведи свайп в сторону ворот. Длина свайпа задаёт силу удара.</p></div><button class="btn" id="resetBtn">ЗАНОВО</button><button class="btn primary" id="menuBtn">МЕНЮ</button></div>
+<div id="toast">GOAL!</div>
+<div class="panel" id="menu">
+ <div class="card">
+  <div class="eyebrow">NEXT GENERATION FOOTBALL</div>
+  <h1>ТВОЯ ИГРА.<br><span style="color:var(--lime)">ТВОИ ПРАВИЛА.</span></h1>
+  <p class="sub">Первый игровой прототип. Выбери режим — позже здесь появятся полноценная карьера, клубы, трансферы и матчи 11 на 11.</p>
+  <div class="choices">
+   <button class="choice active" data-mode="career"><b>КАРЬЕРА</b><span>Развивай своего игрока и забивай голы</span></button>
+   <button class="choice" data-mode="club"><b>КЛУБ</b><span>Управляй командой и создавай атаки</span></button>
+  </div>
+  <button class="btn primary full" id="startBtn">НАЧАТЬ ИГРУ</button>
+ </div>
 </div>
-<div class="toast" id="toast"></div>
-<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
-<script>
-'use strict';
-const STORAGE='nexusDeckDataV2';
-const COLORS=['#d9dde5','#aeb6c5','#a8c6ba','#c7b5d8','#d8c2a7'];
-const makeKey=(name,icon,hint,action,color)=>({name,icon,hint,action,color});
-const initialPages=[
- {id:'home',name:'Главная',title:'Главная',desc:'Быстрые действия и приложения',keys:[
-  makeKey('Remote Play','🎮','Открыть сайт','https://remoteplay.dl.playstation.net/remoteplay/',COLORS[0]),
-  makeKey('YouTube','▶','Открыть сайт','https://youtube.com',COLORS[1]),
-  makeKey('Spotify','♫','Открыть сайт','https://open.spotify.com/',COLORS[2]),
-  makeKey('Twitch','◉','Открыть сайт','https://twitch.tv',COLORS[3]),
-  makeKey('PS Store','▣','Открыть сайт','https://store.playstation.com/',COLORS[4]),
-  makeKey('Скриншот','▧','Команда PS5','bridge:screenshot',COLORS[0]),
-  makeKey('Запись клипа','⏺','Команда PS5','bridge:record',COLORS[1]),
-  makeKey('Микрофон','🎙','Команда PS5','bridge:mute',COLORS[2]),
-  makeKey('Медиа','♫','Раздел','page:media',COLORS[3]),
-  makeKey('Быстрые','⚡','Раздел','page:quick',COLORS[4]),
-  makeKey('Папки','▤','Раздел','page:folders',COLORS[0]),
-  null
- ]},
- {id:'apps',name:'Приложения',title:'Приложения',desc:'Ссылки на сервисы',keys:[
-  makeKey('Netflix','N','Открыть сайт','https://netflix.com',COLORS[0]),
-  makeKey('YouTube','▶','Открыть сайт','https://youtube.com',COLORS[1]),
-  makeKey('Spotify','♫','Открыть сайт','https://open.spotify.com',COLORS[2]),
-  makeKey('Twitch','◉','Открыть сайт','https://twitch.tv',COLORS[3]),
-  makeKey('Discord','◌','Открыть сайт','https://discord.com/app',COLORS[4]),
-  makeKey('PS Store','▣','Открыть сайт','https://store.playstation.com',COLORS[0])
- ]},
- {id:'media',name:'Медиа',title:'Медиа',desc:'Музыка и управление звуком',keys:[
-  makeKey('Spotify','♫','Открыть сайт','https://open.spotify.com',COLORS[2]),
-  makeKey('YouTube Music','♪','Открыть сайт','https://music.youtube.com',COLORS[1]),
-  makeKey('Громче','＋','Команда PS5','bridge:volumeup',COLORS[0]),
-  makeKey('Тише','－','Команда PS5','bridge:volumedown',COLORS[0]),
-  makeKey('Без звука','◖','Команда PS5','bridge:mute',COLORS[3])
- ]},
- {id:'quick',name:'Быстрые',title:'Быстрые действия',desc:'Быстрый доступ к командам',keys:[
-  makeKey('Скриншот','▧','Команда PS5','bridge:screenshot',COLORS[0]),
-  makeKey('Запись клипа','⏺','Команда PS5','bridge:record',COLORS[1]),
-  makeKey('Remote Play','🎮','Открыть сайт','https://remoteplay.dl.playstation.net/remoteplay/',COLORS[2]),
-  makeKey('Главная','⌂','Раздел','page:home',COLORS[3])
- ]},
- {id:'folders',name:'Папки',title:'Папки',desc:'Создавай отдельные панели для своих сценариев',keys:[
-  makeKey('Новая папка','＋','Создать','createpage',COLORS[0])
- ]}
-];
-function normalizePages(raw){
- if(!Array.isArray(raw)||!raw.length)return structuredCloneSafe(initialPages);
- return raw.map((p,pi)=>({id:String(p.id||'page_'+pi),name:String(p.name||'Страница'),title:String(p.title||p.name||'Страница'),desc:String(p.desc||''),keys:Array.from({length:12},(_,i)=>{
-  const k=(p.keys||[])[i];if(!k)return null;
-  if(Array.isArray(k))return makeKey(k[2]||'Кнопка',k[1]||'✦',k[3]||'Действие',k[4]||'',COLORS[i%5]);
-  if(typeof k==='object')return {name:String(k.name||'Кнопка'),icon:String(k.icon||'✦'),hint:String(k.hint||'Действие'),action:String(k.action||''),color:k.color||COLORS[i%5]};
-  return null;
- })}));
-}
-function structuredCloneSafe(x){return JSON.parse(JSON.stringify(x))}
-let pages;
-try{pages=normalizePages(JSON.parse(localStorage.getItem(STORAGE)||localStorage.getItem('nexusPages')||'null'));}catch(e){pages=structuredCloneSafe(initialPages)}
-let active='home',editing=false,activeFolder=null;
-const $=id=>document.getElementById(id);
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function save(){localStorage.setItem(STORAGE,JSON.stringify(pages));}
-function currentPage(){return pages.find(p=>p.id===active)||pages[0]}
-function currentKeys(){return activeFolder?activeFolder.keys:currentPage().keys}
-function toast(message){$('toast').textContent=message;$('toast').classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').classList.remove('show'),2500)}
-function render(){
- const p=currentPage(),keys=currentKeys();
- $('pageTitle').textContent=activeFolder?activeFolder.name:p.title;
- $('pageDesc').textContent=activeFolder?'Кнопки папки':p.desc;
- $('tabs').innerHTML=pages.map(x=>`<button class="tab ${!activeFolder&&x.id===active?'active':''}" data-id="${esc(x.id)}">${esc(x.name)}</button>`).join('');
- $('tabs').querySelectorAll('[data-id]').forEach(b=>b.addEventListener('click',()=>{active=b.dataset.id;activeFolder=null;render()}));
- $('deck').classList.toggle('editing',editing);
- $('deck').innerHTML=Array.from({length:12},(_,i)=>{
-  const k=keys[i];return k?`<button class="key" data-index="${i}"><span class="editmark">ИЗМ.</span><span class="glyph">${esc(k.icon)}</span><span class="name">${esc(k.name)}</span><span class="hint">${esc(k.hint)}</span></button>`:`<button class="key empty" data-index="${i}"><span class="glyph">＋</span><span class="name">Добавить</span></button>`;
- }).join('');
- $('deck').querySelectorAll('.key').forEach(b=>b.addEventListener('click',()=>{const i=Number(b.dataset.index),k=keys[i];if(editing){openKeyEditor(i,k);return}if(!k){toast('Нажми «Настроить», чтобы добавить кнопку');return}execute(k)}));
- $('pageCount').textContent=`${pages.findIndex(x=>x.id===active)+1} / ${pages.length}`;
- $('dots').innerHTML=pages.map(x=>`<i class="${!activeFolder&&x.id===active?'active':''}"></i>`).join('');
- $('editBtn').textContent=editing?'Готово':'Настроить';$('editBtn').classList.toggle('active',editing);
-}
-function execute(k){
- const a=k.action||'';
- if(/^https?:\/\//i.test(a)){window.open(a,'_blank','noopener,noreferrer');return}
- if(a.startsWith('page:')){active=a.slice(5);activeFolder=null;render();return}
- if(a==='createpage'){openPageCreator();return}
- if(a==='back:folders'){activeFolder=null;render();return}
- if(a.startsWith('bridge:')){sendBridge(a.slice(7));return}
- if(a.startsWith('note:')){toast(a.slice(5)||k.name);return}
- toast('Для этой кнопки действие не задано');
-}
-function showModal(content){$('modal').innerHTML=content;$('overlay').classList.add('show')}
-function closeModal(){$('overlay').classList.remove('show')}
-$('overlay').addEventListener('click',e=>{if(e.target===$('overlay'))closeModal()});
-function openKeyEditor(index,key){
- const keys=currentKeys(),editingExisting=!!key;
- showModal(`<h3>${editingExisting?'Изменить кнопку':'Добавить кнопку'}</h3><p>Настрой название, значок и действие. Изменения сохраняются в браузере.</p>
- <label class="field"><span>Название</span><input id="keyName" maxlength="28" placeholder="Например, YouTube" value="${esc(key?.name||'')}"></label>
- <div class="formrow"><label class="field"><span>Иконка</span><input id="keyIcon" maxlength="6" value="${esc(key?.icon||'✦')}"></label><label class="field"><span>Цвет значка</span><select id="keyColor">${COLORS.map((c,i)=>`<option value="${c}" ${(key?.color||COLORS[index%5])===c?'selected':''}>${['Серебристый','Серо-голубой','Зелёный','Лавандовый','Песочный'][i]}</option>`).join('')}</select></label></div>
- <label class="field"><span>Действие</span><select id="keyType"><option value="url">Открыть сайт или ссылку</option><option value="note">Показать сообщение</option><option value="bridge">Команда Mac Bridge</option><option value="page">Открыть раздел</option></select></label>
- <label class="field"><span>Адрес / команда / текст</span><input id="keyValue" placeholder="https://example.com"></label>
- <div class="helper">Команды Mac Bridge пока сохраняются как заготовки. Они начнут выполняться после установки и настройки сервера на Mac.</div>
- <div class="actions"><button id="cancelEdit">Отмена</button>${editingExisting?'<button class="danger" id="deleteKey">Удалить</button>':''}<button class="primary" id="saveKey">Сохранить</button></div>`);
- const old=key?.action||'';
- if(old.startsWith('http')){$('keyType').value='url';$('keyValue').value=old}
- else if(old.startsWith('bridge:')){$('keyType').value='bridge';$('keyValue').value=old.slice(7)}
- else if(old.startsWith('note:')){$('keyType').value='note';$('keyValue').value=old.slice(5)}
- else if(old.startsWith('page:')){$('keyType').value='page';$('keyValue').value=old.slice(5)}
- $('cancelEdit').onclick=closeModal;
- if(editingExisting)$('deleteKey').onclick=()=>{keys[index]=null;save();closeModal();render();toast('Кнопка удалена')};
- $('saveKey').onclick=()=>{
-  const name=$('keyName').value.trim(),icon=$('keyIcon').value.trim()||'✦',type=$('keyType').value,value=$('keyValue').value.trim();
-  if(!name){toast('Укажи название кнопки');return}
-  let action='';
-  if(type==='url'){if(!/^https?:\/\//i.test(value)){toast('Ссылка должна начинаться с https:// или http://');return}action=value}
-  if(type==='note')action='note:'+value;
-  if(type==='bridge'){if(!/^[a-z0-9_-]+$/i.test(value)){toast('Для команды используй латинские буквы, цифры, _ или -');return}action='bridge:'+value}
-  if(type==='page'){if(!pages.some(p=>p.id===value)){toast('Раздел с таким ID не найден');return}action='page:'+value}
-  keys[index]={name,icon,hint:{url:'ССЫЛКА',note:'СООБЩЕНИЕ',bridge:'MAC BRIDGE',page:'РАЗДЕЛ'}[type],action,color:$('keyColor').value};
-  save();closeModal();render();toast('Кнопка сохранена');
- };
-}
-function openPageCreator(){
- showModal(`<h3>Новая страница</h3><p>Создай отдельный экран на 12 кнопок.</p><label class="field"><span>Название</span><input id="newPageName" maxlength="18" placeholder="Например, Игры"></label><div class="actions"><button id="cancelPage">Отмена</button><button class="primary" id="createPage">Создать</button></div>`);
- $('cancelPage').onclick=closeModal;
- $('createPage').onclick=()=>{const name=$('newPageName').value.trim();if(!name){toast('Введи название страницы');return}const id='page_'+Date.now();pages.push({id,name,title:name,desc:'Пользовательская панель',keys:[null,null,null,null,null,null,null,null,null,null,null,null]});active=id;activeFolder=null;save();closeModal();editing=true;render();toast('Страница создана — добавь кнопки')};
-}
-function bridgeUrl(){return (localStorage.getItem('nexusBridgeUrl')||'').trim().replace(/\/+$/,'')}
-async function sendBridge(command){
- const base=bridgeUrl();if(!base){toast('Сначала укажи адрес Mac Bridge в настройках');return}
- try{const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),3500);const response=await fetch(base+'/command',{method:'POST',headers:{'Content-Type':'application/json','X-Nexus-Token':localStorage.getItem('nexusBridgeToken')||''},body:JSON.stringify({command}),signal:controller.signal});clearTimeout(timer);if(!response.ok)throw new Error('HTTP '+response.status);toast('Команда отправлена')}
- catch(e){toast('Mac Bridge недоступен. Проверь Mac и Wi‑Fi')}
-}
-async function checkBridge(url){
- const status=$('status');$('bridgeTitle').textContent='Проверяем подключение…';$('bridgeSub').textContent=url;
- try{const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),3500);const r=await fetch(url+'/health',{method:'GET',cache:'no-store',signal:controller.signal});clearTimeout(timer);if(!r.ok)throw new Error('HTTP '+r.status);status.classList.add('online');$('statusText').textContent='ONLINE';$('bridgeTitle').textContent='Mac Bridge подключён';$('bridgeSub').textContent='Сервер отвечает';toast('Соединение установлено')}
- catch(e){status.classList.remove('online');$('statusText').textContent='OFFLINE';$('bridgeTitle').textContent='Mac Bridge не отвечает';$('bridgeSub').textContent='Проверь адрес, сервер и Wi‑Fi';toast('Не удалось подключиться к Mac Bridge')}
-}
-$('editBtn').onclick=()=>{editing=!editing;render();if(editing)toast('Выбери кнопку или свободный слот для настройки')};
-$('settingsBtn').onclick=()=>{
- showModal(`<h3>Настройки</h3><p>Адрес локального сервера на MacBook. Оба устройства должны быть в одной Wi‑Fi сети.</p><label class="field"><span>Адрес Mac Bridge</span><input id="bridgeAddress" placeholder="http://192.168.1.10:8765" value="${esc(bridgeUrl())}"></label><div class="helper">Сам сервер Mac Bridge ещё нужно установить. Не используй адрес сайта GitHub Pages — здесь нужен локальный IP-адрес MacBook.</div><div class="actions"><button id="cancelSettings">Закрыть</button><button class="primary" id="saveSettings">Сохранить</button></div>`);
- $('cancelSettings').onclick=closeModal;$('saveSettings').onclick=()=>{const v=$('bridgeAddress').value.trim().replace(/\/+$/,'');if(v&&!/^https?:\/\/[^\s]+$/i.test(v)){toast('Проверь формат адреса');return}localStorage.setItem('nexusBridgeUrl',v);localStorage.setItem('nexusBridgeToken',$('bridgeToken').value.trim());closeModal();if(v)checkBridge(v);else{ $('status').classList.remove('online');$('statusText').textContent='OFFLINE';$('bridgeTitle').textContent='Mac не подключён';$('bridgeSub').textContent='Команды PS5 пока недоступны'}};
-};
-$('bridgeBtn').onclick=()=>{const u=bridgeUrl();if(!u){$('settingsBtn').click();return}checkBridge(u)};
-render();
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+const root=document.getElementById('game');
+const scene=new THREE.Scene(); scene.background=new THREE.Color(0x9bb9bb); scene.fog=new THREE.Fog(0x9bb9bb,24,58);
+const camera=new THREE.PerspectiveCamera(43,innerWidth/innerHeight,.1,120);
+camera.position.set(0,13,21); camera.lookAt(0,0,-2);
+const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.7)); renderer.setSize(innerWidth,innerHeight); renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap; renderer.outputColorSpace=THREE.SRGBColorSpace; renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.15; root.appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xe8f7ff,0x314c39,2.0));
+const sun=new THREE.DirectionalLight(0xffffff,2.6); sun.position.set(-7,15,9); sun.castShadow=true; sun.shadow.mapSize.set(1024,1024); scene.add(sun);
+const mat=(c,r=.8,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
+const grass=mat(0x277d49), stripe1=mat(0x2b874f), stripe2=mat(0x247443), white=mat(0xf2f4e9), dark=mat(0x14231e), skin=mat(0xc58d68), kit=mat(0xe8f1ed,.55), keeperKit=mat(0xffbd43,.55), ballMat=mat(0xffffff,.35);
+const field=new THREE.Mesh(new THREE.PlaneGeometry(22,34),grass); field.rotation.x=-Math.PI/2; field.position.z=-4; field.receiveShadow=true; scene.add(field);
+for(let i=0;i<8;i++){let s=new THREE.Mesh(new THREE.PlaneGeometry(22,4.25),i%2?stripe1:stripe2);s.rotation.x=-Math.PI/2;s.position.set(0,.006,-18.875+i*4.25);scene.add(s)}
+function line(points,material=white,r=.035){const curve=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)));const mesh=new THREE.Mesh(new THREE.TubeGeometry(curve,Math.max(24,points.length*8),r,6,false),material);mesh.position.y=.025;scene.add(mesh);return mesh}
+function flatLine(x1,z1,x2,z2){line([[x1,0,z1],[x2,0,z2]])}
+flatLine(-10.5,-20,10.5,-20);flatLine(-10.5,12,10.5,12);flatLine(-10.5,-20,-10.5,12);flatLine(10.5,-20,10.5,12);flatLine(-10.5,-4,10.5,-4);
+const circle=[];for(let i=0;i<=64;i++){let a=i/64*Math.PI*2;circle.push([Math.cos(a)*3,0,Math.sin(a)*3-4])}line(circle);
+const box=new THREE.Mesh(new THREE.BoxGeometry(10,0.04,5),white);box.position.set(0,.02,9.5);scene.add(box);const small=new THREE.Mesh(new THREE.BoxGeometry(4.5,.04,2),white);small.position.set(0,.03,11);scene.add(small);
+const goal=new THREE.Group();goal.position.set(0,0,-20);
+for(const [x,y,z,sx,sy,sz] of [[-3.7,1.25,0,.13,2.5,.13],[3.7,1.25,0,.13,2.5,.13],[0,2.5,0,7.5,.13,.13],[0,1.2,-.5,7.3,2.3,.06]]){let m=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),white);m.position.set(x,y,z);m.castShadow=true;goal.add(m)}
+const net=new THREE.Mesh(new THREE.BoxGeometry(7.2,2.3,.04),new THREE.MeshBasicMaterial({color:0xddebe4,wireframe:true,transparent:true,opacity:.23}));net.position.set(0,1.2,-.42);goal.add(net);scene.add(goal);
+function player(x,z,color=kit,scale=1){const g=new THREE.Group();const torso=new THREE.Mesh(new THREE.CapsuleGeometry(.34*scale,.65*scale,4,8),color);torso.position.y=1.05*scale;torso.castShadow=true;g.add(torso);const head=new THREE.Mesh(new THREE.SphereGeometry(.22*scale,12,10),skin);head.position.y=1.68*scale;head.castShadow=true;g.add(head);for(let side of [-1,1]){let leg=new THREE.Mesh(new THREE.CapsuleGeometry(.12*scale,.52*scale,3,6),dark);leg.position.set(side*.17*scale,.39*scale,0);leg.castShadow=true;g.add(leg)}g.position.set(x,0,z);scene.add(g);return g}
+const striker=player(0,5,kit,1.05);const keeper=player(0,-17,keeperKit,1.0);
+const defenders=[player(-2.5,-7,mat(0x4678c8),.95),player(2.6,-10,mat(0x4678c8),.95)];
+// restore shared team materials after helper creates objects
+const ball=new THREE.Mesh(new THREE.SphereGeometry(.27,24,18),ballMat);ball.position.set(0,.29,3.6);ball.castShadow=true;scene.add(ball);
+const seams=new THREE.Group();for(let i=0;i<3;i++){const tor=new THREE.Mesh(new THREE.TorusGeometry(.17,.012,5,24),mat(0x18201d));tor.rotation.set(i*.9,i*1.2,0);seams.add(tor)}ball.add(seams);
+const shadow=new THREE.Mesh(new THREE.CircleGeometry(.32,24),new THREE.MeshBasicMaterial({color:0x07120f,transparent:true,opacity:.24}));shadow.rotation.x=-Math.PI/2;shadow.position.y=.012;scene.add(shadow);
+let mode='career',goals=0,shot=false,vel=new THREE.Vector3(),drag=null,phase='ready',anim=0;
+function setMode(m){mode=m;document.getElementById('modeLabel').textContent=m==='career'?'CAREER · TRAINING':'CLUB · ATTACK';document.getElementById('hintTitle').textContent=m==='career'?'Удар по воротам':'Создай голевую атаку';document.getElementById('hintText').textContent=m==='career'?'Проведи от мяча к воротам. Длина свайпа задаёт силу удара.':'В этом прототипе доступен удар. Командные передачи добавим следующим этапом.'}
+function reset(){ball.position.set(0,.29,3.6);vel.set(0,0,0);shot=false;phase='ready';striker.position.set(0,0,5);keeper.position.x=0;document.getElementById('status').textContent='Проведи пальцем от мяча к воротам'}
+function toast(t){const el=document.getElementById('toast');el.textContent=t;el.style.opacity=1;setTimeout(()=>el.style.opacity=0,900)}
+function project(clientX,clientY){const r=renderer.domElement.getBoundingClientRect();return new THREE.Vector2((clientX-r.left)/r.width*2-1,-((clientY-r.top)/r.height)*2+1)}
+const ray=new THREE.Raycaster(),plane=new THREE.Plane(new THREE.Vector3(0,1,0),-.29),hit=new THREE.Vector3();
+renderer.domElement.addEventListener('pointerdown',e=>{if(document.getElementById('menu').classList.contains('hidden')&&!shot){const p=project(e.clientX,e.clientY);ray.setFromCamera(p,camera);if(ray.ray.intersectPlane(plane,hit)&&hit.distanceTo(ball.position)<2.2){drag={x:e.clientX,y:e.clientY};renderer.domElement.setPointerCapture(e.pointerId);document.getElementById('status').textContent='Веди палец к цели…'}}});
+renderer.domElement.addEventListener('pointerup',e=>{if(!drag)return;let dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag=null;const len=Math.hypot(dx,dy);if(len<12){document.getElementById('status').textContent='Свайп слишком короткий';return}let power=THREE.MathUtils.clamp(len/190,.28,1.35);let lateral=THREE.MathUtils.clamp(dx/220,-.8,.8);vel.set(lateral*power*8,Math.min(.3+power*.55,1.15),-power*18);shot=true;phase='flight';document.getElementById('status').textContent='Удар! Мяч в полёте';});
+function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.033);anim+=dt;
+ if(shot){ball.position.addScaledVector(vel,dt);vel.y-=9.8*dt;if(ball.position.y<.27){ball.position.y=.27;vel.y=Math.abs(vel.y)*.38;if(Math.abs(vel.y)<1.0)vel.y=0;vel.x*=.91;vel.z*=.91}ball.rotation.x+=vel.z*dt*1.7;ball.rotation.z-=vel.x*dt*1.7;shadow.position.x=ball.position.x;shadow.position.z=ball.position.z;shadow.scale.setScalar(1+ball.position.y*.12);
+ // keeper tracks the ball and makes a simple save attempt
+ keeper.position.x=THREE.MathUtils.damp(keeper.position.x,THREE.MathUtils.clamp(ball.position.x*.8,-2.8,2.8),2.8,dt);
+ if(ball.position.z<-19.6){if(Math.abs(ball.position.x)<3.6&&ball.position.y<2.55){goals++;document.getElementById('goals').textContent=goals;toast('GOAL!');document.getElementById('status').textContent='ГОЛ! Отличный удар';}else{toast('MISS');document.getElementById('status').textContent='Мимо ворот'}shot=false;setTimeout(reset,850)}
+ if(ball.position.z>13||Math.abs(ball.position.x)>13){document.getElementById('status').textContent='Мяч за пределами поля';shot=false;setTimeout(reset,500)}
+ } else {ball.position.y=.29+Math.sin(anim*2)*.025;seams.rotation.y+=dt*.2}
+ renderer.render(scene,camera)}
+const clock=new THREE.Clock();animate();
+document.getElementById('startBtn').onclick=()=>{document.getElementById('menu').classList.add('hidden');reset()};
+document.getElementById('menuBtn').onclick=()=>document.getElementById('menu').classList.remove('hidden');
+document.getElementById('resetBtn').onclick=reset;
+document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{document.querySelectorAll('.choice').forEach(x=>x.classList.remove('active'));b.classList.add('active');setMode(b.dataset.mode)});
+setMode('career');
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.7))});
 </script>
-</body>
-</html>
+</body></html>
